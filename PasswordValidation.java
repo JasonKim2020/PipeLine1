@@ -9,3 +9,4 @@ public class PasswordValidation {
 			System.out.println("Please enter the valid password");
 		}
 	}
+}
