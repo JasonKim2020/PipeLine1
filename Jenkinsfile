@@ -1,32 +1,46 @@
- 
 pipeline{
-  agent any
-  
-  stages{    
-    stage("build"){
-      steps{
-        echo 'building the application...' 
-        sh 'javac Display.java'
-      }
-    }
-    
-    stage("test"){
-      when{
-        expression{
-          BRANCH_NAME == 'master' || BRANCH_NAME == 'main' 
+  agent any{
+    stages{
+      stage('One'){
+        steps{
+          echo 'Hi, this is Piepline'
         }
       }
-      steps{
-        echo 'testing the application...'
+      stage('Two'){
+        steps{
+          input('Do you want to proceed?')
+        }
+      }
+      stage('Three'){
+        when{
+          not{
+            branch "master"
+          }
+        }
+        steps{
+          echo "Hello"
+        }
+      }
+      stage('Four'){
+        parallel{
+          stage('Unit Test'){
+            steps{
+              echo "Running the unit test..."
+            }
+          }
+          stage('Integration test'){
+            agent{
+              docker{
+                reuseNode false
+                image 'ubuntu'
+              }
+            }
+            steps{
+              echo 'Running the integration test...'
+            }
+          }
+        }
       }
     }
-    
-    stage("deploy"){
-      steps{
-        echo 'deploying the application...'        
-      }
-    }
-     
   }
 }
- 
