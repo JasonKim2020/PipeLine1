@@ -3,9 +3,7 @@ pipeline{
   agent any 
     stage("build"){
       steps{
-        echo 'building the application...' 
-        sh "javac Display.java"
-        sh "javac UseDisplay.java"
+        echo 'building the application...'  
       }
     }
     
